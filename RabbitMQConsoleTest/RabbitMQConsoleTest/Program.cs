@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RabbitMQ.Client;
+using System;
 
 namespace RabbitMQConsoleTest
 {
@@ -14,6 +15,14 @@ namespace RabbitMQConsoleTest
             var connection = connectionFactory.CreateConnection();
             var model = connection.CreateModel();
             //model.BasicPublish();
+
+            model.QueueDeclare("MyQueue", true, false, false, null);
+            Console.WriteLine("Queue creates");
+
+            model.ExchangeDeclare("MyExchange", ExchangeType.Topic);
+            Console.WriteLine("Exchange created");
+
+            model.QueueBind("MyQueue", "MyExchange", "cars");
             Console.WriteLine("Hello World!");
         }
     }
